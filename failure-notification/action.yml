@@ -1,0 +1,46 @@
+name: Failure notification
+
+description: Job failure notification
+
+inputs:
+  slack-webhook:
+    description: 'Slack webhook'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Failure notification
+      uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3
+      with:
+        status: custom
+        fields: workflow,job,commit,repo,ref,author,took
+        custom_payload: |
+          {
+            attachments: [{
+              color: 'danger',
+              author_name: 'Failed Job',
+              fields: [{
+                title: 'Project',
+                value: `${process.env.AS_REPO}`,
+                short: true
+              },
+              {
+                title: 'Job',
+                value: `${process.env.AS_WORKFLOW} -> ${process.env.AS_JOB}`,
+                short: true
+              },
+              {
+                title: 'Branch',
+                value: `${process.env.AS_REF}`,
+                short: true
+              },
+              {
+                title: 'Owner',
+                value: `${process.env.AS_AUTHOR}`,
+                short: true
+              }],
+            }]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack-webhook }}
