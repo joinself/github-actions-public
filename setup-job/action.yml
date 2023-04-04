@@ -20,6 +20,7 @@ runs:
       shell: sh
       run: |
         repository=${{ github.repository }}
+        mkdir -p ${GITHUB_WORKSPACE}/.ci
         echo "export CI_PROJECT_NAME=${repository#*/}" > ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_PROJECT_NAMESPACE=${repository%/*}" >> ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_WORKDIR=${GITHUB_WORKSPACE}" >> ${GITHUB_WORKSPACE}/.ci/env
