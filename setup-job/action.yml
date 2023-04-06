@@ -24,13 +24,14 @@ runs:
         echo "export CI_PROJECT_NAME=${repository#*/}" > ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_PROJECT_NAMESPACE=${repository%/*}" >> ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_WORKDIR=${GITHUB_WORKSPACE}" >> ${GITHUB_WORKSPACE}/.ci/env
-        echo "export CI_REF_NAME=${GITHUB_REF_NAME}" >> ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_JOB=${GITHUB_JOB}" >> ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_REPOSITORY=${GITHUB_REPOSITORY}" >> ${GITHUB_WORKSPACE}/.ci/env
         echo "export CI_WORKFLOW=${GITHUB_WORKFLOW}" >> ${GITHUB_WORKSPACE}/.ci/env
         if [ "${{github.event_name}}" = "pull_request" ]
         then
+          echo "export CI_REF_NAME=${GITHUB_HEAD_REF}" >> ${GITHUB_WORKSPACE}/.ci/env
           echo "export CI_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> ${GITHUB_WORKSPACE}/.ci/env
         else
+          echo "export CI_REF_NAME=${GITHUB_REF_NAME}" >> ${GITHUB_WORKSPACE}/.ci/env
           echo "export CI_COMMIT_SHA=${GITHUB_SHA}" >> ${GITHUB_WORKSPACE}/.ci/env
         fi
