@@ -35,3 +35,8 @@ runs:
           echo "export CI_REF_NAME=${GITHUB_REF_NAME}" >> ${GITHUB_WORKSPACE}/.ci/env
           echo "export CI_COMMIT_SHA=${GITHUB_SHA}" >> ${GITHUB_WORKSPACE}/.ci/env
         fi
+        if command -v git; then
+          git config --global user.name ci
+          git config --global user.email ops@joinself.com
+          git config --global --add safe.directory '*'
+        fi
